@@ -1,0 +1,49 @@
+# Build outputs
+target/
+build/
+dist/
+node_modules/
+pharma-devops/terraform/envs/dev/*.tfstate
+pharma-devops/terraform/envs/dev/*.tfstate.backup
+pharma-devops/terraform/envs/dev/.terraform/
+pharma-devops/terraform/envs/dev/*tfvars
+pharma-devops/terraform/envs/dev/terraform.lock.hcl
+# Terraform
+*.tfstate
+*.tfstate.backup
+*.tfvars
+.terraform/
+.terraform.lock.hcl
+crash.log
+
+# Secrets — NEVER commit
+*.env
+.env
+.env.local
+secrets/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+.dockerignore
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+hs_err_pid*
+
+# Maven wrapper
+.mvn/
+
+# Logs
+*.log
+logs/
