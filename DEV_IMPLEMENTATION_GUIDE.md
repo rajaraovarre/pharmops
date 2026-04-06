@@ -802,19 +802,35 @@ argocd login localhost:8080 \
 
 ### 8.5 Apply ArgoCD Project and Applications
 
+The individual service ArgoCD Application manifests live directly in `pharmops-gitops/argocd/apps/dev/`. Each one uses `path: helm-charts` (the shared Helm chart) with a per-service values file resolved via `../envs/dev/values-<service>.yaml`.
+
 **Mac / WSL2:**
 ```bash
-kubectl apply -f ~/pharma-devops/argocd/projects/pharma-project.yaml
-kubectl apply -f ~/pharma-devops/argocd/apps/dev/pharma-dev-app.yaml
+kubectl apply -f ~/pharmops-gitops/argocd/projects/pharma-project.yaml
+
+# Apply individual service apps
+kubectl apply -f ~/pharmops-gitops/argocd/apps/dev/pharma-dev-app.yaml
+kubectl apply -f ~/pharmops-gitops/argocd/apps/dev/api-gateway-app.yaml
+kubectl apply -f ~/pharmops-gitops/argocd/apps/dev/auth-service-app.yaml
+kubectl apply -f ~/pharmops-gitops/argocd/apps/dev/catalog-service-app.yaml
+kubectl apply -f ~/pharmops-gitops/argocd/apps/dev/notification-service-app.yaml
+kubectl apply -f ~/pharmops-gitops/argocd/apps/dev/pharma-ui-app.yaml
 ```
 
 **Windows PowerShell:**
 ```powershell
-kubectl apply -f C:\Users\YourName\pharma-devops\argocd\projects\pharma-project.yaml
-kubectl apply -f C:\Users\YourName\pharma-devops\argocd\apps\dev\pharma-dev-app.yaml
+kubectl apply -f C:\Users\YourName\pharmops-gitops\argocd\projects\pharma-project.yaml
+
+# Apply individual service apps
+kubectl apply -f C:\Users\YourName\pharmops-gitops\argocd\apps\dev\pharma-dev-app.yaml
+kubectl apply -f C:\Users\YourName\pharmops-gitops\argocd\apps\dev\api-gateway-app.yaml
+kubectl apply -f C:\Users\YourName\pharmops-gitops\argocd\apps\dev\auth-service-app.yaml
+kubectl apply -f C:\Users\YourName\pharmops-gitops\argocd\apps\dev\catalog-service-app.yaml
+kubectl apply -f C:\Users\YourName\pharmops-gitops\argocd\apps\dev\notification-service-app.yaml
+kubectl apply -f C:\Users\YourName\pharmops-gitops\argocd\apps\dev\pharma-ui-app.yaml
 ```
 
-> **Before applying:** Edit `pharma-dev-app.yaml` and update `repoURL` to your actual GitHub pharma-helm-charts URL.
+> **Before applying:** Edit each `*-app.yaml` and replace `<YOUR_GITHUB_USERNAME>` in `repoURL` with your actual GitHub username/org.
 
 ---
 
