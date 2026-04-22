@@ -91,8 +91,8 @@ docker buildx build --platform linux/amd64 `
 Fork both repositories on GitHub into your account, then clone:
 
 ```bash
-git clone https://github.com/<YOUR_GITHUB_USERNAME>/pharmops.git
-git clone https://github.com/<YOUR_GITHUB_USERNAME>/pharmops-gitops.git
+git clone https://github.com/ravdy/pharmops.git
+git clone https://github.com/ravdy/pharmops-gitops.git
 ```
 
 ---
@@ -138,7 +138,7 @@ find envs/dev -name "*.yaml" -exec \
   sed -i "s/<RDS_ENDPOINT>/$RDS_ENDPOINT/g" {} \;
 ```
 
-### 2.3 `<YOUR_GITHUB_USERNAME>` → Your GitHub username
+### 2.3 `ravdy` → Your GitHub username
 
 Files to update: all files under `argocd/apps/dev/` and `argocd/projects/`
 
@@ -146,7 +146,7 @@ Quick replace:
 ```bash
 GITHUB_USERNAME="<your-github-username>"
 find argocd -name "*.yaml" -exec \
-  sed -i "s/<YOUR_GITHUB_USERNAME>/$GITHUB_USERNAME/g" {} \;
+  sed -i "s/ravdy/$GITHUB_USERNAME/g" {} \;
 ```
 
 ### 2.4 `<YOUR_ALB_HOSTNAME>` → Your nginx ingress ALB hostname
@@ -397,11 +397,52 @@ kubectl run psql-init \
   --namespace=dev \
   --restart=Never \
   --env="PGPASSWORD=<YOUR_DB_PASSWORD>" \
-  -- psql -h ${RDS_ENDPOINT} -U pharma -d pharmadb \
+  -- psql -h ${RDS_ENDPOINT} -U pharmaadmin -d pharmadb \
   -f /dev/stdin < pharmops-gitops/db-init/01-schemas.sql
 
 kubectl logs psql-init -n dev
 kubectl delete pod psql-init -n dev
+
+# Create a ConfigMap from your SQL file
+kubectl create configmap db-init-schemas \
+  --from-file=01-schemas.sql=db-init/01-schemas.sql \
+  --namespace=dev
+
+# Run the init pod with the file mounted
+kubectl run psql-init2 \
+  --image=postgres:15-alpine \
+  --namespace=dev \
+  --restart=Never \
+  --overrides='{
+    "spec": {
+      "containers": [{
+        "name": "psql-init2",
+        "image": "postgres:15-alpine",
+        "env": [{"name": "PGPASSWORD", "value": "password123"}],
+        "command": ["psql",
+          "-h", ${RDS_ENDPOINT},
+          "-U", "pharmaadmin",
+          "-d", "pharmadb",
+          "-f", "/sql/01-schemas.sql"],
+        "volumeMounts": [{"name": "sql", "mountPath": "/sql"}]
+      }],
+      "volumes": [{"name": "sql", "configMap": {"name": "db-init-schemas"}}]
+    }
+  }'
+
+# Check logs
+kubectl logs psql-init2 -n dev
+
+# Verify schemas
+kubectl run psql-check2 \
+  --image=postgres:15-alpine \
+  --namespace=dev \
+  --restart=Never \
+  --env="PGPASSWORD=password123" \
+  -- psql -h ${RDS_ENDPOINT} -U pharmaadmin -d pharmadb \
+  -c "\dn"
+kubectl logs psql-check2 -n dev
+
 ```
 
 ---
@@ -414,7 +455,7 @@ kubectl run psql-check \
   --namespace=dev \
   --restart=Never \
   --env="PGPASSWORD=<YOUR_DB_PASSWORD>" \
-  -- psql -h ${RDS_ENDPOINT} -U pharma -d pharmadb \
+  -- psql -h ${RDS_ENDPOINT} -U pharmaadmin -d pharmadb \
   -c "\dn"
 kubectl logs psql-check -n dev
 # Expected: schemas listed — auth, drug_catalog (and others)
@@ -450,7 +491,7 @@ docker buildx build --platform linux/amd64 \
 
 # catalog-service (ECR repo name is catalog-service, directory is drug-catalog-service)
 docker buildx build --platform linux/amd64 \
-  -t ${REGISTRY}/catalog-service:${IMAGE_TAG} --push services/drug-catalog-service
+  -t ${REGISTRY}/drug-catalog-service:${IMAGE_TAG} --push services/drug-catalog-service
 
 # notification-service
 docker buildx build --platform linux/amd64 \

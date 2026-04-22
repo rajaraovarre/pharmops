@@ -830,7 +830,7 @@ kubectl apply -f C:\Users\YourName\pharmops-gitops\argocd\apps\dev\notification-
 kubectl apply -f C:\Users\YourName\pharmops-gitops\argocd\apps\dev\pharma-ui-app.yaml
 ```
 
-> **Before applying:** Edit each `*-app.yaml` and replace `<YOUR_GITHUB_USERNAME>` in `repoURL` with your actual GitHub username/org.
+> **Before applying:** Edit each `*-app.yaml` and replace `ravdy` in `repoURL` with your actual GitHub username/org.
 
 ---
 
