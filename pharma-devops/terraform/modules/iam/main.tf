@@ -1,3 +1,11 @@
+#OIDC Token Looks Like this
+#{
+#  "sub": "system:serviceaccount:kube-system:external-secrets",
+#  "aud": "sts.amazonaws.com",
+#  "iss": "https://oidc.eks.amazonaws.com/id/xxxx"
+#}
+
+
 data "aws_iam_policy_document" "eso_assume_role" {
   statement {
     actions = ["sts:AssumeRoleWithWebIdentity"]    #Allow pod to call sts service(eso pod will use oidc token to assume iam role)
