@@ -1,4 +1,4 @@
-#OIDC Token Looks Like this
+#OIDC Token Looks Like this(generates token by only ESO pod)
 #{
 #  "sub": "system:serviceaccount:kube-system:external-secrets",
 #  "aud": "sts.amazonaws.com",
