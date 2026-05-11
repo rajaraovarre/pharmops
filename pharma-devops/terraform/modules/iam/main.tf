@@ -60,8 +60,8 @@ resource "aws_iam_role_policy_attachment" "eso_secrets_attachment" {
   policy_arn = aws_iam_policy.eso_secrets_policy.arn
 }
 #Work Flow  for ESO :   ESO pod starts --> pod(svc account: external-secrets) --> Eks generates OIDC token  --> AWS SDK inside ESO pod reads (oidc token, iam ro])
-#le ARN) --> SDK Will make an api call to aws sts serviced(here STS Validates c oidc provider, sub, aud) --> if allow, STS issues temprorary aws credentials
-# ----> ESO uses those credentials to call secret manager APIS --> ESO fethes secrets ----> ESO pos sync to k8s secret obj --> App pods can consume k8s secrets.
+#le ARN) --> SDK Will make an api call to aws sts serviced(here STS Validates oidc provider, sub, aud) --> if allow, STS issues temprorary aws credentials
+# ----> ESO uses those credentials to call secret manager APIS --> ESO fethes secrets ----> ESO pod sync to k8s secret obj --> App pods can consume k8s secrets.
 
 
 # ArgoCD IRSA Role
