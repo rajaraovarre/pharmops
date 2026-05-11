@@ -32,7 +32,7 @@ resource "aws_iam_role" "eso_role" {
   tags = {
     Name    = "${var.project}-${var.env}-eso-role"
     Env     = var.env
-    Project = var.project
+    Project = var.project   #AWS identity for ESO pod
   }
 }
 
