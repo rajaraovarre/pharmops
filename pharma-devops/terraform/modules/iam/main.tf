@@ -27,7 +27,7 @@ data "aws_iam_policy_document" "eso_assume_role" {
 
 resource "aws_iam_role" "eso_role" {
   name               = "${var.project}-${var.env}-eso-role"
-  assume_role_policy = data.aws_iam_policy_document.eso_assume_role.json
+  assume_role_policy = data.aws_iam_policy_document.eso_assume_role.json  # This role can be assumed ONLY by allowed ESO pod
 
   tags = {
     Name    = "${var.project}-${var.env}-eso-role"
