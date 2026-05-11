@@ -72,7 +72,7 @@ resource "aws_iam_role_policy_attachment" "eso_secrets_attachment" {
 # ----> ESO uses those credentials to call secret manager APIS --> ESO fethes secrets ----> ESO pod sync to k8s secret obj --> App pods can consume k8s secrets.
 
 
-# ArgoCD IRSA Role
+# ArgoCD IRSA Role(optional becoz argocd talks k8s api server and deploy applications directly)
 data "aws_iam_policy_document" "argocd_assume_role" {
   statement {
     actions = ["sts:AssumeRoleWithWebIdentity"]
