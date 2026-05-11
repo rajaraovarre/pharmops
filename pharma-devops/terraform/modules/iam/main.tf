@@ -6,7 +6,7 @@
 #}
 
 
-data "aws_iam_policy_document" "eso_assume_role" {
+data "aws_iam_policy_document" "eso_assume_role" {    # here data blocks just generates JSON policy. Not fetch existing data from AWS
   statement {
     actions = ["sts:AssumeRoleWithWebIdentity"]    #Allow pod to call sts service(eso pod will use oidc token to assume iam role)
     effect  = "Allow"
