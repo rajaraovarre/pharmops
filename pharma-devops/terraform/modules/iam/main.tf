@@ -32,11 +32,11 @@ resource "aws_iam_role" "eso_role" {
   tags = {
     Name    = "${var.project}-${var.env}-eso-role"
     Env     = var.env
-    Project = var.project   #AWS identity for ESO pod
+    Project = var.project   # AWS identity for ESO pod(Trust Policy)
   }
 }
 
-resource "aws_iam_policy" "eso_secrets_policy" {
+resource "aws_iam_policy" "eso_secrets_policy" {     # what AWS action ESO pod can perform(permission policy)
   name        = "${var.project}-${var.env}-eso-secrets-policy"
   description = "Allow External Secrets Operator to read pharma secrets from AWS Secrets Manager"
 
