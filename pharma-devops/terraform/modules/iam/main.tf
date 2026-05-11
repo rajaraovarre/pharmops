@@ -5,14 +5,17 @@ data "aws_iam_policy_document" "eso_assume_role" {
 
     condition {
       test     = "StringEquals"
-      variable = "${replace(var.oidc_provider_url, "https://", "")}:sub"
+      variable = "${replace(var.oidc_provider_url, "https://", "")}:sub"  # Read sub(identity) claim from incoming oidc token
       values   = ["system:serviceaccount:kube-system:external-secrets"]
+        # check the incoming tokens sub fiels. it its value value exactly matches system:serviceaccount:kube-system:external-secrets, allow role assumption.
+          [here exactly matches both varaible(Actual value from oidc token) == values(Expected/allowed value)]
     }
 
     condition {
       test     = "StringEquals"
       variable = "${replace(var.oidc_provider_url, "https://", "")}:aud"
       values   = ["sts.amazonaws.com"]
+         # check token audience(aud) field . Allow only if audience equals  to sts.amazonaws.com
     }
 
     principals {
