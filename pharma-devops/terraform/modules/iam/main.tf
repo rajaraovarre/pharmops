@@ -50,7 +50,7 @@ resource "aws_iam_policy" "eso_secrets_policy" {     # what AWS action ESO pod c
           "secretsmanager:DescribeSecret"
         ]
         Resource = "arn:aws:secretsmanager:*:${var.aws_account_id}:secret:/pharma/*" # Restrict accessible secrets(secret managers has number of secret obj)
-      }
+      }                                                    # ESO pod can access within in pharma secrets(read pharma secrets from decret manager)
     ]
   })
 }
