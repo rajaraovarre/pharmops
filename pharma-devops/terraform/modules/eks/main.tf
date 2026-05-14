@@ -68,6 +68,17 @@ resource "aws_iam_role_policy_attachment" "node_AmazonEC2ContainerRegistryReadOn
   role       = aws_iam_role.node_group.name
 }
 
+#resource "aws_iam_role_policy_attachment" "node_policy" {
+#  for_each = toset([
+#    "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
+#    "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
+#    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+#  ])
+
+#  policy_arn = each.value
+#  role       = aws_iam_role.node.name
+#}                  Instead of append three policies individually we can appended at a time using for each
+
 # EKS Cluster
 resource "aws_eks_cluster" "main" {
   name     = "${var.project}-${var.env}-cluster"
