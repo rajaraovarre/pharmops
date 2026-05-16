@@ -37,6 +37,18 @@ module "rds" {
   db_password           = var.db_password
 }
 
+#module "rds" {
+#  source = "../../modules/rds"
+#  project               = "pharma"
+#  env                   = "prod"
+#  subnet_ids            = module.vpc.private_rds_subnet_ids
+#  vpc_id                = module.vpc.vpc_id
+#  eks_security_group_id = module.eks.node_security_group_id
+#  db_name               = "pharmadb"
+# ✅ Secret name only
+#  db_secret_name        = "/pharma/prod/db-credentials"
+#}
+
 module "ecr" {
   source = "../../modules/ecr"
 
