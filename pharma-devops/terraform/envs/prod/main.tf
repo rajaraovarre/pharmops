@@ -46,7 +46,7 @@ module "rds" {
 #  eks_security_group_id = module.eks.node_security_group_id
 #  db_name               = "pharmadb"
 # ✅ Secret name only
-#  db_secret_name        = "/pharma/prod/db-credentials"
+#  db_secret_name        = "/pharma/prod/db-credentials"   # here we can pass values of secrets based on environment(exect path in secret manager based on env)
 #}
 
 module "ecr" {
