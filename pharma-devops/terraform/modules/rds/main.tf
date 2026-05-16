@@ -74,7 +74,7 @@ resource "aws_db_instance" "main" {
 # =====================================================
 
 #data "aws_secretsmanager_secret" "db_credentials" {
-#  name = "/pharma/${var.env}/db-credentials"
+#  name = "var.db_secret_name"
 #}
 
 #data "aws_secretsmanager_secret_version" "db_credentials" {
